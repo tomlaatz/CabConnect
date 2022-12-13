@@ -1,0 +1,240 @@
+package com.acme.cabconnect.presentation.fahrten
+
+import androidx.compose.foundation.background
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.acme.cabconnect.presentation.Screen
+import com.acme.cabconnect.presentation.fahrten.components.DatePicker
+import com.acme.cabconnect.presentation.fahrten.components.Heading
+import com.acme.cabconnect.ui.theme.*
+import java.time.LocalDate
+import java.time.ZoneId
+
+@Composable
+fun SuchformularScreen(
+    navController: NavController
+) {
+    Box(modifier = Modifier
+        .background(WhiteGrey)
+        .fillMaxSize()
+    ) {
+        Column {
+            BoxWithConstraints {
+                val maxHeight = this.maxHeight
+
+                val topHeight: Dp = maxHeight * 2 / 4
+
+                val centerPaddingBottom = maxHeight * 1 / 4
+
+                Heading(
+                    headline = "Finde die Fahrt \ndeiner Wahl",
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .height(topHeight)
+                )
+
+                Suchformular(
+                    navController = navController,
+                    modifier = Modifier
+                        .padding(top = centerPaddingBottom, start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                )
+            }
+        }
+    }
+
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun Suchformular(
+    navController: NavController,
+    modifier: Modifier
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Card(
+        elevation = 4.dp,
+        shape = RoundedCornerShape(40.dp),
+        modifier = modifier
+    ) {
+        Column {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, start = 45.dp)
+            ) {
+                Text(text = "Von:", fontWeight = FontWeight.Bold, color = Grey)
+            }
+
+            var startOrt by remember {
+                mutableStateOf("")
+            }
+
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                TextField(
+                    value = startOrt,
+                    onValueChange = { startOrt = it },
+                    placeholder = { Text(text = "Startort angeben") },
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(
+                        onDone = {keyboardController?.hide()})
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp, start = 45.dp)
+            ) {
+                Text(text = "Nach:", fontWeight = FontWeight.Bold, color = Grey)
+            }
+
+            var zielOrt by remember {
+                mutableStateOf("")
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                TextField(
+                    value = zielOrt,
+                    onValueChange = { zielOrt = it },
+                    placeholder = { Text(text = "Zielort angeben") },
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(
+                        onDone = {keyboardController?.hide()})
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp, start = 45.dp)
+            ) {
+                Text(text = "Datum:", fontWeight = FontWeight.Bold, color = Grey)
+            }
+
+            var pickedDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, start = 35.dp, end = 45.dp)
+            ) {
+                DatePicker(modifier = Modifier.weight(1f), pickedDate = pickedDate, onPickedDateChange = { pickedDate = it })
+            }
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, start = 45.dp)
+            ) {
+                Text(text = "Personen:", fontWeight = FontWeight.Bold, color = Grey)
+            }
+
+            var platz by remember {
+                mutableStateOf("1")
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, end = 150.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp),
+                    tint = Grey
+                )
+                
+                Spacer(modifier = Modifier.padding(horizontal = 10.dp))
+
+                val maxChar = 2
+
+                TextField(
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    value = platz,
+                    onValueChange = {
+                        if (it.length <= maxChar) {
+                            platz = it
+                        }
+                    },
+                    modifier = Modifier.width(60.dp),
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(
+                        onDone = {keyboardController?.hide()})
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(30.dp),
+                    shape = RoundedCornerShape(40.dp),
+                    onClick = {
+                        navController.navigate(
+                            Screen.SuchergebnisseScreen.route +
+                                    "?datum=${pickedDate.atStartOfDay(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli()}&start=$startOrt&ziel=$zielOrt&freierPlatz=$platz"
+                        )
+                    }) {
+                    Text(
+                        text = "Suchen",
+                        color = Grey,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+
+    }
+}
