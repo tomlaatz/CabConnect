@@ -238,7 +238,7 @@ fun Suchformular(
                         onClick = {
                             navController.navigate(
                                 Screen.SuchergebnisseScreen.route +
-                                        "?datum=${pickedDate.atStartOfDay(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli()}&start=$startOrt&ziel=$zielOrt&freierPlatz=$platz"
+                                        "?datum=${pickedDate.atStartOfDay(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli()}&start=${startOrt.trim().uppercase()}&ziel=${zielOrt.trim().uppercase()}&freierPlatz=$platz"
                             )
                         }) {
                         Text(

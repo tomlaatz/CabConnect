@@ -8,14 +8,16 @@ interface CabConnectDao {
 
     @Transaction
     @Query("SELECT * FROM fahrten " +
-            "WHERE datum >= :datum AND start LIKE '%' || :start || '%' " +
-            "AND ziel LIKE '%' || :ziel || '%' AND freierPlatz >= :freierPlatz AND geloescht = 0 " +
+            "WHERE datum >= :datum AND UPPER(start) LIKE '%' || :start || '%' " +
+            "AND UPPER(ziel) LIKE '%' || :ziel || '%' AND freierPlatz >= :freierPlatz AND geloescht = 0 " +
             "ORDER BY datum ASC")
    fun getAllWithParams(datum: Long, start: String, ziel: String, freierPlatz: Int): List<MitgliederEinerFahrt>
 
     @Transaction
-    @Query("SELECT * FROM fahrten f INNER JOIN UserFahrtRelation ufr ON f.fahrtId=ufr.fahrtId WHERE ufr.userId = :userId AND f.geloescht = 0 ORDER BY datum ASC")
-    suspend fun getMeineFahrten(userId: Int): List<MitgliederEinerFahrt>
+    @Query("SELECT * FROM fahrten f INNER JOIN UserFahrtRelation ufr " +
+            "ON f.fahrtId=ufr.fahrtId WHERE ufr.userId = :userId AND f.geloescht = 0 " +
+            "AND datum >= :datum ORDER BY datum ASC")
+    suspend fun getMeineFahrten(userId: Int,datum: Long = System.currentTimeMillis()-86400000): List<MitgliederEinerFahrt>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun fahrtBeitreten(beitreten: UserFahrtRelation)

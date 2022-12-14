@@ -93,7 +93,7 @@ fun Suchergebnisse(
     Log.d("In Suchergebnisse: ", "State: ${state.fahrten}")
 
     LazyColumn(
-        modifier = modifier.padding(bottom = 60.dp),
+        modifier = modifier.padding(top = 20.dp, bottom = 60.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         items(state.fahrten) {
@@ -132,7 +132,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)
+                        .padding(start = 30.dp, end = 30.dp, bottom = 20.dp)
                 ) {
 
                     Column(

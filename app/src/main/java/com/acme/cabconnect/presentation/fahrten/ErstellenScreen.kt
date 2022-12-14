@@ -243,8 +243,8 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                             viewModel.onEvent(CabConnectEvent.CreateFahrt(
                                 fahrt = Fahrt(
                                     datum = zdt.toInstant().toEpochMilli(),
-                                    start = startOrt,
-                                    ziel = zielOrt,
+                                    start = startOrt.trim(),
+                                    ziel = zielOrt.trim(),
                                     freierPlatz = platz.toInt()
                                 ),
                                 userId = 1
