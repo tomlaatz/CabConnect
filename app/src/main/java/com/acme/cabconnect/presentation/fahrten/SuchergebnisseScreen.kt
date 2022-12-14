@@ -2,6 +2,7 @@ package com.acme.cabconnect.presentation.fahrten
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,10 +24,7 @@ import com.acme.cabconnect.presentation.CabConnectEvent
 import com.acme.cabconnect.presentation.CabConnectViewModel
 import com.acme.cabconnect.presentation.Screen
 import com.acme.cabconnect.presentation.fahrten.components.Heading
-import com.acme.cabconnect.ui.theme.Grey
-import com.acme.cabconnect.ui.theme.Orange
-import com.acme.cabconnect.ui.theme.White
-import com.acme.cabconnect.ui.theme.WhiteGrey
+import com.acme.cabconnect.ui.theme.*
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -36,6 +34,7 @@ import java.util.*
 fun SuchergebnisseScreen(
     navController: NavController,
     viewModel: CabConnectViewModel = hiltViewModel(),
+    darkTheme: Boolean = isSystemInDarkTheme(),
     datum: Long,
     start: String,
     ziel: String,
@@ -48,7 +47,7 @@ fun SuchergebnisseScreen(
     )
 
     Box(modifier = Modifier
-        .background(WhiteGrey)
+        .background(if (darkTheme) Black else WhiteGrey)
         .fillMaxSize()
     ) {
         Column {
@@ -104,7 +103,12 @@ fun Suchergebnisse(
 }
 
 @Composable
-fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectViewModel = hiltViewModel(), navController: NavController) {
+fun SuchergebnisItem(
+    suchergebnis: MitgliederEinerFahrt,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    viewModel: CabConnectViewModel = hiltViewModel(),
+    navController: NavController
+) {
     val formatter = DateTimeFormatter.ofPattern("EEEE, dd.MM.").withLocale(Locale.GERMANY)
     val formatterAbfahrt = DateTimeFormatter.ofPattern("HH:mm").withLocale(Locale.GERMANY)
     var openDialog by remember {
@@ -113,17 +117,18 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
 
     if (openDialog) {
         AlertDialog(
+            backgroundColor = if (darkTheme) DarkGrey else White,
             modifier = Modifier.padding(20.dp),
             shape = RoundedCornerShape(40.dp),
             onDismissRequest = {
                 openDialog = false
             },
             title = {
-                Text(text = "Fahrt beitreten?", fontWeight = FontWeight.Bold, color = Grey)
+                Text(text = "Fahrt beitreten?", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
             },
             text = {
                 Column {
-                    Text("Um dieser Fahrt beitreten zu können müssen Sie eine Gebühr von 0.50€ zahlen.", color = Grey)
+                    Text("Um dieser Fahrt beitreten zu können müssen Sie eine Gebühr von 0.50€ zahlen.", color = if (darkTheme) White else Grey)
                 }
             },
             buttons = {
@@ -146,7 +151,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                                 navController.navigate(Screen.MeineFahrtenScreen.route)
                             }
                         ) {
-                            Text("Zahlen")
+                            Text("Zahlen", color = if (darkTheme) Black else White)
                         }
                     }
 
@@ -155,10 +160,10 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Button(
-                            colors = ButtonDefaults.buttonColors(backgroundColor = Grey),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = if (darkTheme) White else Grey),
                             onClick = { openDialog = false }
                         ) {
-                            Text(text = "Abbrechen", color = White)
+                            Text(text = "Abbrechen", color = if (darkTheme) Grey else White)
                         }
                     }
 
@@ -182,7 +187,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                 Text(
                     text =  Instant.ofEpochMilli(suchergebnis.fahrt.datum).atZone(ZoneId.of("Europe/Berlin")).toLocalDate().format(formatter),
                     fontSize = 26.sp,
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -199,12 +204,12 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                 ) {
                     Text(
                         text = "Von: ",
-                        color = Grey,
+                        color = if (darkTheme) White else Grey,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = suchergebnis.fahrt.start,
-                        color = Grey
+                        color = if (darkTheme) White else Grey
                     )
                 }
                 Column(
@@ -213,12 +218,12 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                 ) {
                     Text(
                         text = "Nach: ",
-                        color = Grey,
+                        color = if (darkTheme) White else Grey,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = suchergebnis.fahrt.ziel,
-                        color = Grey
+                        color = if (darkTheme) White else Grey
                     )
                 }
             }
@@ -231,12 +236,12 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
             ) {
                 Text(
                     text = "Abfahrt: ",
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = Instant.ofEpochMilli(suchergebnis.fahrt.datum).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime().format(formatterAbfahrt),
-                    color = Grey
+                    color = if (darkTheme) White else Grey
                 )
             }
             Row(
@@ -248,18 +253,18 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
             ) {
                 Text(
                     text = "Freier Platz: ",
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = suchergebnis.fahrt.freierPlatz.toString(),
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     modifier = Modifier.padding(5.dp)
                 )
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
-                    tint = Grey
+                    tint = if (darkTheme) White else Grey
                 )
             }
             Row(
@@ -273,7 +278,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
                         contentDescription = null,
-                        tint = Grey,
+                        tint = if (darkTheme) White else Grey,
                         modifier = Modifier.size(40.dp)
                     )
                 }
@@ -281,7 +286,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                 Column {
                     Text(
                         text = suchergebnis.users[0].username,
-                        color = Grey,
+                        color = if (darkTheme) White else Grey,
                         fontWeight = FontWeight.Bold
                     )
                     Row(
@@ -292,7 +297,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                     ) {
                         Text(
                             text = suchergebnis.users[0].bewertung.toString(),
-                            color = Grey
+                            color = if (darkTheme) White else Grey
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
@@ -319,7 +324,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
                 ) {
                     Text(
                         text = "Beitreten",
-                        color = Grey,
+                        color = if (darkTheme) White else Grey,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )

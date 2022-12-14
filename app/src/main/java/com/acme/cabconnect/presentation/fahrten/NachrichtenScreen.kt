@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -8,12 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import com.acme.cabconnect.presentation.fahrten.components.Heading
+import com.acme.cabconnect.ui.theme.Black
 import com.acme.cabconnect.ui.theme.WhiteGrey
 
 @Composable
-fun NachrichtenScreen(navController: NavController){
+fun NachrichtenScreen(navController: NavController, darkTheme: Boolean = isSystemInDarkTheme()){
     Box(modifier = Modifier
-        .background(WhiteGrey)
+        .background(if (darkTheme) Black else WhiteGrey)
         .fillMaxSize()
     ) {
         Column {

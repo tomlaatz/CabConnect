@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,9 +24,7 @@ import com.acme.cabconnect.presentation.CabConnectEvent
 import com.acme.cabconnect.presentation.CabConnectViewModel
 import com.acme.cabconnect.presentation.Screen
 import com.acme.cabconnect.presentation.fahrten.components.Heading
-import com.acme.cabconnect.ui.theme.Grey
-import com.acme.cabconnect.ui.theme.White
-import com.acme.cabconnect.ui.theme.WhiteGrey
+import com.acme.cabconnect.ui.theme.*
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -34,14 +33,15 @@ import java.util.*
 @Composable
 fun MeineFahrtenScreen(
     navController: NavController,
-    viewModel: CabConnectViewModel = hiltViewModel()
+    viewModel: CabConnectViewModel = hiltViewModel(),
+    darkTheme: Boolean = isSystemInDarkTheme()
 ) {
     viewModel.onEvent(
         CabConnectEvent.GetMeineFahrten(1)
     )
 
     Box(modifier = Modifier
-        .background(WhiteGrey)
+        .background(if (darkTheme) Black else WhiteGrey)
         .fillMaxSize()
     ) {
         Column {
@@ -74,7 +74,11 @@ fun MeineFahrtenScreen(
 }
 
 @Composable
-fun MeineFahrten(viewModel: CabConnectViewModel = hiltViewModel(), modifier: Modifier, navController: NavController) {
+fun MeineFahrten(
+    viewModel: CabConnectViewModel = hiltViewModel(),
+    modifier: Modifier,
+    navController: NavController
+) {
     viewModel.onEvent(CabConnectEvent.GetMeineFahrten(1))
     val state = viewModel.state.collectAsState().value
     LazyColumn(
@@ -90,7 +94,12 @@ fun MeineFahrten(viewModel: CabConnectViewModel = hiltViewModel(), modifier: Mod
 
 
 @Composable
-fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = hiltViewModel(), navController: NavController) {
+fun FahrtItem(
+    fahrtItem: MitgliederEinerFahrt,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    viewModel: CabConnectViewModel = hiltViewModel(),
+    navController: NavController
+) {
     val formatter = DateTimeFormatter.ofPattern("EEEE, dd.MM.").withLocale(Locale.GERMANY)
     val formatterAbfahrt = DateTimeFormatter.ofPattern("HH:mm")
     var openDialog by remember {
@@ -102,6 +111,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
 
     if (openLoeschenDialog) {
         AlertDialog(
+            backgroundColor = if (darkTheme) DarkGrey else White,
             modifier = Modifier.padding(20.dp),
             shape = RoundedCornerShape(40.dp),
             onDismissRequest = {
@@ -115,7 +125,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                         .fillMaxWidth()
                         .padding(bottom = 20.dp)
                 ) {
-                    Text(text = "Fahrt löschen?", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Fahrt löschen?", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                     Button(
                         elevation = null,
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
@@ -124,7 +134,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = null,
-                            tint = Grey
+                            tint = if (darkTheme) White else Grey
                         )
                     }
                 }
@@ -138,7 +148,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                         .fillMaxWidth()
                         .padding(start = 30.dp, end = 30.dp)
                 ) {
-                    Text("Bist du sicher, dass du die Fahrt löschen möchtest?", color = Grey)
+                    Text("Bist du sicher, dass du die Fahrt löschen möchtest?", color = if (darkTheme) White else Grey)
                 }
             },
             buttons = {
@@ -156,14 +166,14 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                     ) {
                         Button(
                             shape = RoundedCornerShape(40.dp),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = Grey),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = if (darkTheme) White else Grey),
                             onClick = {
                                 viewModel.onEvent(CabConnectEvent.DeleteFahrt(fahrtItem.fahrt))
                                 openLoeschenDialog = false
                                 navController.navigate(Screen.MeineFahrtenScreen.route)
                             }
                         ) {
-                            Text("Löschen ", color = White)
+                            Text("Löschen ", color = if (darkTheme) Black else White)
                         }
                     }
 
@@ -175,7 +185,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                             shape = RoundedCornerShape(30.dp),
                             onClick = { openLoeschenDialog = false }
                         ) {
-                            Text(text = "Abbrechen", color = Grey)
+                            Text(text = "Abbrechen", color = if (darkTheme) White else Grey)
                         }
                     }
 
@@ -187,6 +197,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
 
     if (openDialog) {
         AlertDialog(
+            backgroundColor = if (darkTheme) DarkGrey else White,
             modifier = Modifier.padding(20.dp),
             shape = RoundedCornerShape(40.dp),
             onDismissRequest = {
@@ -200,7 +211,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                         .fillMaxWidth()
                         .padding(bottom = 20.dp)
                 ) {
-                    Text(text = "Fahrt austreten?", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Fahrt austreten?", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                     Button(
                         elevation = null,
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
@@ -209,7 +220,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = null,
-                            tint = Grey
+                            tint = if (darkTheme) White else Grey
                         )
                     }
                 }
@@ -223,7 +234,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                         .fillMaxWidth()
                         .padding(start = 30.dp, end = 30.dp)
                 ) {
-                    Text("Bist du sicher, dass du der Fahrt austreten möchtest?", color = Grey)
+                    Text("Bist du sicher, dass du der Fahrt austreten möchtest?", color = if (darkTheme) White else Grey)
                 }
          },
             buttons = {
@@ -241,14 +252,14 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                     ) {
                         Button(
                             shape = RoundedCornerShape(40.dp),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = Grey),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = if (darkTheme) White else Grey),
                             onClick = {
                                 viewModel.onEvent(CabConnectEvent.LeaveFahrt(fahrtItem.fahrt))
                                 openDialog = false
                                 navController.navigate(Screen.MeineFahrtenScreen.route)
                             }
                         ) {
-                            Text("Austreten", color = White)
+                            Text("Austreten", color = if (darkTheme) Black else White)
                         }
                     }
 
@@ -260,7 +271,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                             shape = RoundedCornerShape(30.dp),
                             onClick = { openDialog = false }
                         ) {
-                            Text(text = "Abbrechen", color = Grey)
+                            Text(text = "Abbrechen", color = if (darkTheme) White else Grey)
                         }
                     }
 
@@ -284,7 +295,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                 Text(
                     text = Instant.ofEpochMilli(fahrtItem.fahrt.datum).atZone(ZoneId.of("Europe/Berlin")).toLocalDate().format(formatter),
                     fontSize = 26.sp,
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -301,12 +312,12 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                 ) {
                     Text(
                         text = "Von: ",
-                        color = Grey,
+                        color = if (darkTheme) White else Grey,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = fahrtItem.fahrt.start,
-                        color = Grey
+                        color = if (darkTheme) White else Grey
                     )
                 }
                 Column(
@@ -315,12 +326,12 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                 ) {
                     Text(
                         text = "Nach: ",
-                        color = Grey,
+                        color = if (darkTheme) White else Grey,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = fahrtItem.fahrt.ziel,
-                        color = Grey
+                        color = if (darkTheme) White else Grey
                     )
                 }
             }
@@ -333,12 +344,12 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
             ) {
                 Text(
                     text = "Abfahrt: ",
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = Instant.ofEpochMilli(fahrtItem.fahrt.datum).atZone(ZoneId.of("Europe/Berlin")).toLocalDateTime().format(formatterAbfahrt),
-                    color = Grey
+                    color = if (darkTheme) White else Grey
                 )
             }
             Row(
@@ -350,12 +361,12 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
             ) {
                 Text(
                     text = "Teilnehmer: ",
-                    color = Grey,
+                    color = if (darkTheme) White else Grey,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = fahrtItem.users.size.toString(),
-                    color = Grey
+                    color = if (darkTheme) White else Grey
                 )
             }
 
@@ -377,7 +388,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
                     },
                     shape = RoundedCornerShape(40.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Grey,
+                        backgroundColor = if (darkTheme) Orange else Grey,
                     ),
                     modifier = Modifier
                         .fillMaxWidth()

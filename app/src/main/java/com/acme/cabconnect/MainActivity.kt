@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.acme.cabconnect.di.AppModule
 import com.acme.cabconnect.domain.model.*
@@ -22,7 +24,8 @@ import com.acme.cabconnect.presentation.Screen
 import com.acme.cabconnect.presentation.fahrten.*
 import com.acme.cabconnect.presentation.fahrten.components.BottomMenuContent
 import com.acme.cabconnect.presentation.fahrten.components.BottomNavigationBar
-import com.acme.cabconnect.ui.theme.CabConnectTheme
+import com.acme.cabconnect.ui.theme.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -33,8 +36,21 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CabConnectTheme {
+                val darkTheme = isSystemInDarkTheme()
+                val systemUiController = rememberSystemUiController()
+                if(darkTheme){
+                    systemUiController.setSystemBarsColor(
+                        color = Black
+                    )
+                }else{
+                    systemUiController.setSystemBarsColor(
+                        color = White
+                    )
+                }
+
                 val navController = rememberNavController()
 
                 Surface(

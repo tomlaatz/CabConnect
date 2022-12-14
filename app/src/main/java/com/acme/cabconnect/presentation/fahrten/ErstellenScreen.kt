@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +32,9 @@ import com.acme.cabconnect.presentation.Screen
 import com.acme.cabconnect.presentation.fahrten.components.DatePicker
 import com.acme.cabconnect.presentation.fahrten.components.Heading
 import com.acme.cabconnect.presentation.fahrten.components.TimePicker
+import com.acme.cabconnect.ui.theme.Black
 import com.acme.cabconnect.ui.theme.Grey
+import com.acme.cabconnect.ui.theme.White
 import com.acme.cabconnect.ui.theme.WhiteGrey
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -39,9 +42,9 @@ import java.time.LocalTime
 import java.time.ZoneId
 
 @Composable
-fun ErstellenScreen(navController: NavController) {
+fun ErstellenScreen(navController: NavController, darkTheme: Boolean = isSystemInDarkTheme()) {
     Box(modifier = Modifier
-        .background(WhiteGrey)
+        .background(if (darkTheme) Black else WhiteGrey)
         .fillMaxSize()
     ) {
         Column {
@@ -76,11 +79,18 @@ fun ErstellenScreen(navController: NavController) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltViewModel(), navController: NavController) {
+fun ErstellenFormular(
+    modifier: Modifier,
+    viewModel: CabConnectViewModel = hiltViewModel(),
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    navController: NavController
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()).padding(bottom = 60.dp)
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 60.dp)
     ) {
         Card(
             elevation = 4.dp,
@@ -94,7 +104,7 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                         .fillMaxWidth()
                         .padding(top = 30.dp, start = 45.dp)
                 ) {
-                    Text(text = "Wo fährst du los?:", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Wo fährst du los?:", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var startOrt by remember {
@@ -124,7 +134,7 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                         .fillMaxWidth()
                         .padding(top = 5.dp, start = 45.dp)
                 ) {
-                    Text(text = "Wohin fährst du?", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Wohin fährst du?", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var zielOrt by remember {
@@ -154,7 +164,7 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                         .fillMaxWidth()
                         .padding(top = 5.dp, start = 45.dp)
                 ) {
-                    Text(text = "Wann fährst du?", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Wann fährst du?", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var pickedDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
@@ -178,7 +188,7 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                         .fillMaxWidth()
                         .padding(top = 5.dp, start = 45.dp)
                 ) {
-                    Text(text = "Wieviel Platz ist frei?", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Wieviel Platz ist frei?", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var platz by remember {
@@ -218,7 +228,7 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                             imageVector = Icons.Default.Person,
                             contentDescription = null,
                             modifier = Modifier.size(30.dp),
-                            tint = Grey
+                            tint = if (darkTheme) White else Grey
                         )
                     }
                     Text("Person(en)")
@@ -253,7 +263,7 @@ fun ErstellenFormular(modifier: Modifier, viewModel: CabConnectViewModel = hiltV
                         }) {
                         Text(
                             text = "Fahrt erstellen",
-                            color = Grey,
+                            color = if (darkTheme) White else Grey,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )

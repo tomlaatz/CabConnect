@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.BottomNavigation
@@ -16,14 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.acme.cabconnect.ui.theme.Grey
-import com.acme.cabconnect.ui.theme.Orange
-import com.acme.cabconnect.ui.theme.White
+import com.acme.cabconnect.ui.theme.*
 
 @Composable
 fun BottomNavigationBar(
-    items: List<BottomMenuContent>,
     modifier: Modifier = Modifier,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    items: List<BottomMenuContent>,
     navController: NavController,
     onItemClick: (BottomMenuContent) -> Unit
 ) {
@@ -31,13 +31,13 @@ fun BottomNavigationBar(
     BottomNavigation(
         modifier = modifier.drawBehind {
             drawLine(
-                Grey,
+                if (darkTheme) WhiteGrey else Grey,
                 Offset(0f, 0f),
                 Offset(size.width, 0f),
                 5f
             )
         },
-        backgroundColor = White,
+        backgroundColor = if (darkTheme) Black else White,
         elevation = 5.dp
     ) {
         items.forEach { item ->
@@ -46,7 +46,7 @@ fun BottomNavigationBar(
                 selected = selected,
                 onClick = { onItemClick(item) },
                 selectedContentColor = Orange,
-                unselectedContentColor = Grey,
+                unselectedContentColor = if (darkTheme) White else Grey,
                 icon = {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

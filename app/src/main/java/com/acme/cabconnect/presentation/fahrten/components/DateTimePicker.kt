@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -31,6 +32,7 @@ import java.time.format.DateTimeFormatter
 fun DatePicker(
     pickedDate: LocalDate,
     onPickedDateChange: (LocalDate) -> Unit,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     modifier: Modifier
 ) {
     val dateDialogState = rememberMaterialDialogState()
@@ -52,7 +54,7 @@ fun DatePicker(
                 imageVector = Icons.Default.DateRange,
                 contentDescription = null,
                 modifier = Modifier.size(30.dp),
-                tint = Grey
+                tint = if (darkTheme) White else Grey
             )
         }
         TextField(

@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -33,10 +34,11 @@ import java.time.ZoneId
 
 @Composable
 fun SuchformularScreen(
-    navController: NavController
+    navController: NavController,
+    darkTheme: Boolean = isSystemInDarkTheme()
 ) {
     Box(modifier = Modifier
-        .background(WhiteGrey)
+        .background(if (darkTheme) Black else WhiteGrey)
         .fillMaxSize()
     ) {
         Column {
@@ -73,7 +75,8 @@ fun SuchformularScreen(
 @Composable
 fun Suchformular(
     navController: NavController,
-    modifier: Modifier
+    modifier: Modifier,
+    darkTheme: Boolean = isSystemInDarkTheme()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -92,7 +95,7 @@ fun Suchformular(
                         .fillMaxWidth()
                         .padding(top = 30.dp, start = 45.dp)
                 ) {
-                    Text(text = "Von:", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Von:", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var startOrt by remember {
@@ -123,7 +126,7 @@ fun Suchformular(
                         .fillMaxWidth()
                         .padding(top = 5.dp, start = 45.dp)
                 ) {
-                    Text(text = "Nach:", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Nach:", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var zielOrt by remember {
@@ -153,7 +156,7 @@ fun Suchformular(
                         .fillMaxWidth()
                         .padding(top = 5.dp, start = 45.dp)
                 ) {
-                    Text(text = "Datum:", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Datum:", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var pickedDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
@@ -174,7 +177,7 @@ fun Suchformular(
                         .fillMaxWidth()
                         .padding(top = 5.dp, start = 45.dp)
                 ) {
-                    Text(text = "Personen:", fontWeight = FontWeight.Bold, color = Grey)
+                    Text(text = "Personen:", fontWeight = FontWeight.Bold, color = if (darkTheme) White else Grey)
                 }
 
                 var platz by remember {
@@ -203,7 +206,7 @@ fun Suchformular(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = null,
                                 modifier = Modifier.size(30.dp),
-                                tint = Grey
+                                tint = if (darkTheme) White else Grey
                             )
                         }
 
@@ -243,7 +246,7 @@ fun Suchformular(
                         }) {
                         Text(
                             text = "Suchen",
-                            color = Grey,
+                            color = if (darkTheme) White else Grey,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
