@@ -80,7 +80,6 @@ fun SuchergebnisseScreen(
 
         }
     }
-
 }
 
 @Composable
@@ -94,7 +93,7 @@ fun Suchergebnisse(
     Log.d("In Suchergebnisse: ", "State: ${state.fahrten}")
 
     LazyColumn(
-        modifier = modifier.padding(bottom = 80.dp),
+        modifier = modifier.padding(bottom = 60.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         items(state.fahrten) {
@@ -114,6 +113,7 @@ fun SuchergebnisItem(suchergebnis: MitgliederEinerFahrt, viewModel: CabConnectVi
 
     if (openDialog) {
         AlertDialog(
+            modifier = Modifier.padding(20.dp),
             shape = RoundedCornerShape(40.dp),
             onDismissRequest = {
                 openDialog = false

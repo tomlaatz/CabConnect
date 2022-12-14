@@ -3,9 +3,11 @@ package com.acme.cabconnect.presentation.fahrten
 import androidx.compose.foundation.background
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -14,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -74,167 +77,180 @@ fun Suchformular(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Card(
-        elevation = 4.dp,
-        shape = RoundedCornerShape(40.dp),
-        modifier = modifier
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState()).padding(bottom = 60.dp)
     ) {
-        Column {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, start = 45.dp)
-            ) {
-                Text(text = "Von:", fontWeight = FontWeight.Bold, color = Grey)
-            }
-
-            var startOrt by remember {
-                mutableStateOf("")
-            }
-
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
-                TextField(
-                    value = startOrt,
-                    onValueChange = { startOrt = it },
-                    placeholder = { Text(text = "Startort angeben") },
-                    singleLine = true,
-                    keyboardActions = KeyboardActions(
-                        onDone = {keyboardController?.hide()})
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp, start = 45.dp)
-            ) {
-                Text(text = "Nach:", fontWeight = FontWeight.Bold, color = Grey)
-            }
-
-            var zielOrt by remember {
-                mutableStateOf("")
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
-                TextField(
-                    value = zielOrt,
-                    onValueChange = { zielOrt = it },
-                    placeholder = { Text(text = "Zielort angeben") },
-                    singleLine = true,
-                    keyboardActions = KeyboardActions(
-                        onDone = {keyboardController?.hide()})
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp, start = 45.dp)
-            ) {
-                Text(text = "Datum:", fontWeight = FontWeight.Bold, color = Grey)
-            }
-
-            var pickedDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, start = 35.dp, end = 45.dp)
-            ) {
-                DatePicker(modifier = Modifier.weight(1f), pickedDate = pickedDate, onPickedDateChange = { pickedDate = it })
-            }
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, start = 45.dp)
-            ) {
-                Text(text = "Personen:", fontWeight = FontWeight.Bold, color = Grey)
-            }
-
-            var platz by remember {
-                mutableStateOf("1")
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, end = 150.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    modifier = Modifier.size(30.dp),
-                    tint = Grey
-                )
-                
-                Spacer(modifier = Modifier.padding(horizontal = 10.dp))
-
-                val maxChar = 2
-
-                TextField(
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = platz,
-                    onValueChange = {
-                        if (it.length <= maxChar) {
-                            platz = it
-                        }
-                    },
-                    modifier = Modifier.width(60.dp),
-                    singleLine = true,
-                    keyboardActions = KeyboardActions(
-                        onDone = {keyboardController?.hide()})
-                )
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Button(
+        Card(
+            elevation = 4.dp,
+            shape = RoundedCornerShape(40.dp)
+        ) {
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(30.dp),
-                    shape = RoundedCornerShape(40.dp),
-                    onClick = {
-                        navController.navigate(
-                            Screen.SuchergebnisseScreen.route +
-                                    "?datum=${pickedDate.atStartOfDay(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli()}&start=$startOrt&ziel=$zielOrt&freierPlatz=$platz"
-                        )
-                    }) {
-                    Text(
-                        text = "Suchen",
-                        color = Grey,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                        .padding(top = 30.dp, start = 45.dp)
+                ) {
+                    Text(text = "Von:", fontWeight = FontWeight.Bold, color = Grey)
+                }
+
+                var startOrt by remember {
+                    mutableStateOf("")
+                }
+
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, bottom = 10.dp, start = 45.dp, end = 45.dp)
+                ) {
+                    TextField(
+                        value = startOrt,
+                        onValueChange = { startOrt = it },
+                        placeholder = { Text(text = "Startort angeben") },
+                        singleLine = true,
+                        keyboardActions = KeyboardActions(
+                            onDone = {keyboardController?.hide()})
                     )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 5.dp, start = 45.dp)
+                ) {
+                    Text(text = "Nach:", fontWeight = FontWeight.Bold, color = Grey)
+                }
+
+                var zielOrt by remember {
+                    mutableStateOf("")
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, bottom = 10.dp, start = 45.dp, end = 45.dp)
+                ) {
+                    TextField(
+                        value = zielOrt,
+                        onValueChange = { zielOrt = it },
+                        placeholder = { Text(text = "Zielort angeben") },
+                        singleLine = true,
+                        keyboardActions = KeyboardActions(
+                            onDone = {keyboardController?.hide()})
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 5.dp, start = 45.dp)
+                ) {
+                    Text(text = "Datum:", fontWeight = FontWeight.Bold, color = Grey)
+                }
+
+                var pickedDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, bottom = 10.dp, start = 45.dp, end = 45.dp)
+                ) {
+                    DatePicker(modifier = Modifier.weight(1f), pickedDate = pickedDate, onPickedDateChange = { pickedDate = it })
+                }
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 5.dp, start = 45.dp)
+                ) {
+                    Text(text = "Personen:", fontWeight = FontWeight.Bold, color = Grey)
+                }
+
+                var platz by remember {
+                    mutableStateOf("1")
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, bottom = 10.dp, start = 45.dp, end = 45.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(
+                            elevation = null,
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Transparent,
+                            ),
+                            onClick = {
+                            }) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = null,
+                                modifier = Modifier.size(30.dp),
+                                tint = Grey
+                            )
+                        }
+
+                        val maxChar = 2
+
+                        TextField(
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            value = platz,
+                            onValueChange = {
+                                if (it.length <= maxChar) {
+                                    platz = it
+                                }
+                            },
+                            singleLine = true,
+                            keyboardActions = KeyboardActions(
+                                onDone = {keyboardController?.hide()})
+                        )
+                    }
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 15.dp, start = 30.dp, end = 30.dp, bottom = 30.dp),
+                        shape = RoundedCornerShape(40.dp),
+                        onClick = {
+                            navController.navigate(
+                                Screen.SuchergebnisseScreen.route +
+                                        "?datum=${pickedDate.atStartOfDay(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli()}&start=$startOrt&ziel=$zielOrt&freierPlatz=$platz"
+                            )
+                        }) {
+                        Text(
+                            text = "Suchen",
+                            color = Grey,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
-
     }
+
 }

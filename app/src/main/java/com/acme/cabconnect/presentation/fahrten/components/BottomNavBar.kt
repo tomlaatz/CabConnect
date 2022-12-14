@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -27,7 +29,14 @@ fun BottomNavigationBar(
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
     BottomNavigation(
-        modifier = modifier.border(1.dp, Grey),
+        modifier = modifier.drawBehind {
+            drawLine(
+                Grey,
+                Offset(0f, 0f),
+                Offset(size.width, 0f),
+                5f
+            )
+        },
         backgroundColor = White,
         elevation = 5.dp
     ) {
@@ -46,7 +55,6 @@ fun BottomNavigationBar(
                         Icon(
                             imageVector = item.icon,
                             contentDescription = item.title
-                            //modifier = Modifier.size(28.dp)
                         )
                         Text(
                             text = item.title,

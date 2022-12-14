@@ -78,7 +78,7 @@ fun MeineFahrten(viewModel: CabConnectViewModel = hiltViewModel(), modifier: Mod
     viewModel.onEvent(CabConnectEvent.GetMeineFahrten(1))
     val state = viewModel.state.collectAsState().value
     LazyColumn(
-        modifier = modifier.padding(bottom = 80.dp),
+        modifier = modifier.padding(bottom = 60.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         items(state.meineFahrten) {
@@ -102,6 +102,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
 
     if (openLoeschenDialog) {
         AlertDialog(
+            modifier = Modifier.padding(20.dp),
             shape = RoundedCornerShape(40.dp),
             onDismissRequest = {
                 openLoeschenDialog = false
@@ -186,6 +187,7 @@ fun FahrtItem(fahrtItem: MitgliederEinerFahrt, viewModel: CabConnectViewModel = 
 
     if (openDialog) {
         AlertDialog(
+            modifier = Modifier.padding(20.dp),
             shape = RoundedCornerShape(40.dp),
             onDismissRequest = {
                 openDialog = false
