@@ -42,7 +42,8 @@ object AppModule {
             joinFahrt = JoinFahrt(repository),
             leaveFahrt = LeaveFahrt(repository),
             getMeineFahrten = GetMeineFahrten(repository),
-            createFahrtRelation = CreateFahrtRelation(repository)
+            createFahrtRelation = CreateFahrtRelation(repository),
+            deleteAll = DeleteAll(repository)
         )
     }
 }

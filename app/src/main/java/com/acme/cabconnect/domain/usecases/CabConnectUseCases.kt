@@ -7,6 +7,7 @@ data class CabConnectUseCases(
     val createFahrt: CreateFahrt,
     val createFahrtRelation: CreateFahrtRelation,
     val deleteFahrt: DeleteFahrt,
+    val deleteAll: DeleteAll,
     val joinFahrt: JoinFahrt,
     val leaveFahrt: LeaveFahrt
 )

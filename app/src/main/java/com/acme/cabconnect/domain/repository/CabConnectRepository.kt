@@ -19,4 +19,12 @@ interface CabConnectRepository {
     suspend fun addFahrtRelation(userFahrtRelation: UserFahrtRelation)
 
     suspend fun deleteFahrt(fahrtId: Int)
+
+    suspend fun deleteFahrten()
+
+    suspend fun deleteUsers()
+
+    suspend fun deleteRelations()
+
+    suspend fun deleteSequence()
 }

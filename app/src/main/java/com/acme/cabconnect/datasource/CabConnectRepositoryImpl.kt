@@ -41,4 +41,20 @@ class CabConnectRepositoryImpl(
     override suspend fun deleteFahrt(fahrtId: Int) {
         return dao.fahrtLoeschen(fahrtId)
     }
+
+    override suspend fun deleteFahrten() {
+        return dao.deleteAllFahrten()
+    }
+
+    override suspend fun deleteUsers() {
+        return dao.deleteAllUsers()
+    }
+
+    override suspend fun deleteRelations() {
+        return dao.deleteAllRelations()
+    }
+
+    override suspend fun deleteSequence() {
+        return dao.deleteSequence()
+    }
 }

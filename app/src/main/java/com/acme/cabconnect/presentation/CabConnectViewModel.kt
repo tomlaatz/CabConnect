@@ -61,6 +61,11 @@ class CabConnectViewModel @Inject constructor(
                     cabConnectUseCases.joinFahrt(userFahrtRelation)
                 }
             }
+            is CabConnectEvent.DeleteAll -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    cabConnectUseCases.deleteAll()
+                }
+            }
         }
     }
 }

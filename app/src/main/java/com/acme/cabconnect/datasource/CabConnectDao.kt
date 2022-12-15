@@ -41,4 +41,15 @@ interface CabConnectDao {
     @Query("SELECT * FROM fahrten")
     fun getAll(): List<Fahrt>
 
+    @Query("DELETE FROM fahrten")
+    fun deleteAllFahrten()
+
+    @Query("DELETE FROM users")
+    fun deleteAllUsers()
+
+    @Query("DELETE FROM UserFahrtRelation")
+    fun deleteAllRelations()
+
+    @Query("DELETE FROM sqlite_sequence")
+    fun deleteSequence()
 }

@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.acme.cabconnect.di.AppModule
 import com.acme.cabconnect.domain.model.*
@@ -94,13 +93,13 @@ class MainActivity : ComponentActivity() {
                     val user4 = User(username = "Walter", bewertung = 3.5)
                     val fahrt1 = Fahrt(datum = System.currentTimeMillis() + 86400000, start = "Karlsruhe", ziel = "Mannheim", freierPlatz = 5)
                     val userFahrtRelation1 = UserFahrtRelation(2,1)
-                    val fahrt2 = Fahrt(datum = System.currentTimeMillis() + 86400000, start = "Heidelberg", ziel = "Mannheim", freierPlatz = 3)
+                    val fahrt2 = Fahrt(datum = System.currentTimeMillis() + 176660000, start = "Heidelberg", ziel = "Mannheim", freierPlatz = 3)
                     val userFahrtRelation2 = UserFahrtRelation(3,2)
-                    val fahrt3 = Fahrt(datum = System.currentTimeMillis() + 86400000, start = "Germersheim", ziel = "Karlsruhe", freierPlatz = 1)
+                    val fahrt3 = Fahrt(datum = System.currentTimeMillis() + 276687000, start = "Germersheim", ziel = "Karlsruhe", freierPlatz = 1)
                     val userFahrtRelation3 = UserFahrtRelation(4,3)
-                    val fahrt4 = Fahrt(datum = System.currentTimeMillis() + 86400000, start = "Heidelberg", ziel = "Karlsruhe", freierPlatz = 2)
+                    val fahrt4 = Fahrt(datum = System.currentTimeMillis() + 399912300, start = "Heidelberg", ziel = "Karlsruhe", freierPlatz = 2)
                     val userFahrtRelation4 = UserFahrtRelation(2,4)
-                    val fahrt5 = Fahrt(datum = System.currentTimeMillis() + 86400000, start = "Mannheim", ziel = "Karlsruhe", freierPlatz = 2)
+                    val fahrt5 = Fahrt(datum = System.currentTimeMillis() + 410002340, start = "Mannheim", ziel = "Karlsruhe", freierPlatz = 4)
                     val userFahrtRelation5 = UserFahrtRelation(3,5)
 
                     AppModule.proideCabConnectDatabase(application).cabConnectDao.createUser(user1)

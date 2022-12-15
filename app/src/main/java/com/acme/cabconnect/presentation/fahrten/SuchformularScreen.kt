@@ -1,6 +1,7 @@
 package com.acme.cabconnect.presentation.fahrten
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,9 +40,15 @@ fun SuchformularScreen(
     navController: NavController,
     darkTheme: Boolean = isSystemInDarkTheme()
 ) {
+    val focusManager = LocalFocusManager.current
     Box(modifier = Modifier
         .background(if (darkTheme) Black else WhiteGrey)
         .fillMaxSize()
+        .pointerInput(Unit) {
+            detectTapGestures(onTap = {
+                focusManager.clearFocus()
+            })
+        }
     ) {
         Column {
             BoxWithConstraints {
@@ -81,7 +90,9 @@ fun Suchformular(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()).padding(bottom = 60.dp)
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 60.dp)
     ) {
         Card(
             elevation = 4.dp,
