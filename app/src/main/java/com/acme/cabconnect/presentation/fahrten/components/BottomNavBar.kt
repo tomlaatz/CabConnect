@@ -19,6 +19,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.acme.cabconnect.ui.theme.*
 
+/**
+ * Beschreibung des unteren Navigationsmenü, dessen Elemente jeweils aus Icon, Text und dem
+ * entsprechenden Link zur Navigation besteht.
+ */
 @Composable
 fun BottomNavigationBar(
     modifier: Modifier = Modifier,

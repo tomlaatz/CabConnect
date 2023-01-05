@@ -9,6 +9,10 @@ import androidx.navigation.navArgument
 import com.acme.cabconnect.presentation.Screen
 import com.acme.cabconnect.presentation.fahrten.*
 
+/**
+ * Hilfsklasse für die Navigation zwischen den einzelnen Screens mit unter anderem Übergabe
+ * der Filter vom Suchformular an die Suchergebnisse für eine erfolgreiche Suche.
+ */
 @Composable
 fun Navigation(navController: NavHostController) {
     NavHost(

@@ -30,6 +30,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * Bildschirm mit dem Grundgerüst für die Übersicht der Suchergebnisse.
+ */
 @Composable
 fun SuchergebnisseScreen(
     navController: NavController,
@@ -40,9 +43,17 @@ fun SuchergebnisseScreen(
     ziel: String,
     freierPlatz: Int
 ) {
+    var sortAsc by remember {
+        mutableStateOf(true)
+    }
+
+    var filter by remember {
+        mutableStateOf("Datum")
+    }
+
     viewModel.onEvent(
         CabConnectEvent.GetSuchergebnisse(
-            datum,start, ziel, freierPlatz
+            datum,start, ziel, freierPlatz, filter, sortAsc
         )
     )
 
@@ -65,7 +76,11 @@ fun SuchergebnisseScreen(
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
                         .height(topHeight),
-                    hasNavigation = true
+                    hasNavigation = true,
+                    sortAsc = sortAsc,
+                    onSortChange = { sortAsc = it },
+                    filter = filter,
+                    onFilterChange = { filter = it }
                 )
 
                 Suchergebnisse(
@@ -81,6 +96,9 @@ fun SuchergebnisseScreen(
     }
 }
 
+/**
+ * Darstellung der Liste der Suchergebnisse bestehend aus sogenannten "Suchergebnis-Items"
+ */
 @Composable
 fun Suchergebnisse(
     viewModel: CabConnectViewModel = hiltViewModel(),
@@ -102,6 +120,16 @@ fun Suchergebnisse(
     }
 }
 
+/**
+ * Einzelne Fahrt, welche die Informationen Datum, Startort, Zielort, Abfahrtszeit, freier Platz
+ * und Profilinformationen des Fahrterstellers angibt.
+ * Wenn die Fahrt von mir selbst erstellt wurde, dann kann ich diese hier nicht beitreten.
+ * Allen anderen Fahrten kann ich hier nach der Bestätigung des PopUps beitreten.
+ * Die Liste ist Standardgemäß nach Abfahrt aufsteigend sortiert, aber kann auch nach freiem Platz,
+ * oder Rating sortiert werden jeweils aufsteigend oder absteigend.
+ * Die Suchergebnisse begrenzen sich auf den angegebenen Tag im Suchformular und sonstigen Filter
+ * Angaben.
+ */
 @Composable
 fun SuchergebnisItem(
     suchergebnis: MitgliederEinerFahrt,

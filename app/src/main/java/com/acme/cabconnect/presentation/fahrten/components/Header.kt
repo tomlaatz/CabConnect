@@ -4,16 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,7 +29,12 @@ import com.acme.cabconnect.presentation.CabConnectEvent
 import com.acme.cabconnect.presentation.CabConnectViewModel
 import com.acme.cabconnect.presentation.Screen
 import com.acme.cabconnect.ui.theme.*
+import java.time.LocalDate
 
+/**
+ * Orangener Hintergrund mit Beschreibung der Bildschirmseite, sowie Einstellungen und ggf.
+ * "Zurück-Button".
+ */
 @Composable
 fun Heading(
     headline: String,
@@ -30,6 +42,10 @@ fun Heading(
     darkTheme: Boolean = isSystemInDarkTheme(),
     viewModel: CabConnectViewModel = hiltViewModel(),
     hasNavigation: Boolean = false,
+    sortAsc: Boolean,
+    onSortChange: (Boolean) -> Unit,
+    filter: String,
+    onFilterChange: (String) -> Unit,
     navController: NavController
 ) {
     var openDialog by remember {
@@ -145,6 +161,107 @@ fun Heading(
                         tint = Grey
                     )
                 }
+
+
+                Row {
+                    if (sortAsc) {
+                        Button(
+                            elevation = null,
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Transparent,
+                            ),
+                            onClick = {
+                                onSortChange(!sortAsc)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.KeyboardArrowUp,
+                                contentDescription = null,
+                                modifier = Modifier.size(30.dp),
+                                tint = Grey
+                            )
+                        }
+                    }
+                    else {
+                        Button(
+                            elevation = null,
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Transparent,
+                            ),
+                            onClick = {
+                                onSortChange(!sortAsc)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.KeyboardArrowDown,
+                                contentDescription = null,
+                                modifier = Modifier.size(30.dp),
+                                tint = Grey
+                            )
+                        }
+                    }
+
+                    val listItems = arrayOf("Datum", "Platz", "Rating")
+                    var disabledItem by remember {
+                        mutableStateOf(0)
+                    }
+
+                    // state of the menu
+                    var expanded by remember {
+                        mutableStateOf(false)
+                    }
+
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        Button(
+                            colors = ButtonDefaults.buttonColors(
+                                disabledBackgroundColor = Color.Transparent
+                            ),
+                            elevation = null,
+                            onClick = {
+                                expanded = true
+                            }
+                        ) {
+                            Text(
+                                text = filter,
+                                color = Grey,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                            Icon(
+                                    imageVector = Icons.Filled.ArrowDropDown,
+                            contentDescription = null,
+                            modifier = Modifier.size(30.dp),
+                            tint = Grey
+                            )
+                        }
+
+                        // drop down menu
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = {
+                                expanded = false
+                            }
+                        ) {
+                            // adding items
+                            listItems.forEachIndexed { itemIndex, itemValue ->
+                                DropdownMenuItem(
+                                    onClick = {
+                                        onFilterChange(itemValue)
+                                        expanded = false
+                                        disabledItem = itemIndex
+                                    },
+                                    enabled = (itemIndex != disabledItem)
+                                ) {
+                                    Text(text = itemValue)
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Button(
                     elevation = null,
                     colors = ButtonDefaults.buttonColors(
@@ -161,6 +278,7 @@ fun Heading(
                         tint = Grey
                     )
                 }
+
             }
         } else {
             Row(

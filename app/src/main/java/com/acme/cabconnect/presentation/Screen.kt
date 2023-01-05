@@ -1,5 +1,6 @@
 package com.acme.cabconnect.presentation
 
+// alle möglichen Screens für das Routing
 sealed class Screen(val route: String) {
     object SuchformularScreen: Screen("suchformular_screen")
     object SuchergebnisseScreen: Screen("suchergebnisse_screen")

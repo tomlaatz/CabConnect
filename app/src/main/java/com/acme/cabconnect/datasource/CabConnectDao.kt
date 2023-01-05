@@ -6,13 +6,15 @@ import com.acme.cabconnect.domain.model.*
 @Dao
 interface CabConnectDao {
 
+    // Menge von Fahrten für die Suchergebnisse
     @Transaction
     @Query("SELECT * FROM fahrten " +
-            "WHERE datum >= :datum AND UPPER(start) LIKE '%' || :start || '%' " +
+            "WHERE datum >= :datum AND datum <= (:datum + 86400000) AND UPPER(start) LIKE '%' || :start || '%' " +
             "AND UPPER(ziel) LIKE '%' || :ziel || '%' AND freierPlatz >= :freierPlatz AND geloescht = 0 " +
             "ORDER BY datum ASC")
    fun getAllWithParams(datum: Long, start: String, ziel: String, freierPlatz: Int): List<MitgliederEinerFahrt>
 
+    // Menge von Fahrten für die eigenen Fahrten
     @Transaction
     @Query("SELECT * FROM fahrten f INNER JOIN UserFahrtRelation ufr " +
             "ON f.fahrtId=ufr.fahrtId WHERE ufr.userId = :userId AND f.geloescht = 0 " +

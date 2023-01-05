@@ -30,6 +30,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * Bildschirm mit dem Grundgerüst für die Übersicht meiner Fahrten.
+ */
 @Composable
 fun MeineFahrtenScreen(
     navController: NavController,
@@ -58,7 +61,11 @@ fun MeineFahrtenScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
-                        .height(topHeight)
+                        .height(topHeight),
+                    sortAsc = true,
+                    onSortChange = { },
+                    filter = "",
+                    onFilterChange = { }
                 )
 
                 MeineFahrten(
@@ -73,6 +80,9 @@ fun MeineFahrtenScreen(
     }
 }
 
+/**
+ * Darstellung der Liste der eigenen Fahrten bestehend aus sogenannten "Fahrt-Items"
+ */
 @Composable
 fun MeineFahrten(
     viewModel: CabConnectViewModel = hiltViewModel(),
@@ -92,7 +102,13 @@ fun MeineFahrten(
     }
 }
 
-
+/**
+ * Einzelne Fahrt, welche die Informationen Datum, Startort, Zielort, Abfahrtszeit und Teil-
+ * nehmeranzahl angibt.
+ * Wenn die Fahrt von mir selbst erstellt wurde, dann kann ich diese hier löschen.
+ * Falls ich der Fahrt beigetreten bin kann ich diser hier auch wieder austreten.
+ * Die Liste ist sortiert nach Datum/Abfahrt (nach dem jetzigen Zeitpunkt).
+ */
 @Composable
 fun FahrtItem(
     fahrtItem: MitgliederEinerFahrt,

@@ -12,6 +12,9 @@ import com.acme.cabconnect.presentation.fahrten.components.Heading
 import com.acme.cabconnect.ui.theme.Black
 import com.acme.cabconnect.ui.theme.WhiteGrey
 
+/**
+ * Bildschirm für das Grundgerüst des Nachrichten-Screens.
+ */
 @Composable
 fun NachrichtenScreen(navController: NavController, darkTheme: Boolean = isSystemInDarkTheme()){
     Box(modifier = Modifier
@@ -30,7 +33,11 @@ fun NachrichtenScreen(navController: NavController, darkTheme: Boolean = isSyste
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
-                        .height(topHeight)
+                        .height(topHeight),
+                    sortAsc = true,
+                    onSortChange = { },
+                    filter = "",
+                    onFilterChange = { }
                 )
             }
         }

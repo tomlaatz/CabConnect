@@ -3,7 +3,14 @@ package com.acme.cabconnect.presentation
 import com.acme.cabconnect.domain.model.Fahrt
 
 sealed class CabConnectEvent {
-    data class GetSuchergebnisse(val datum: Long, val start: String, val ziel: String, val freierPlatz: Int): CabConnectEvent()
+    data class GetSuchergebnisse(
+        val datum: Long,
+        val start: String,
+        val ziel: String,
+        val freierPlatz: Int,
+        val filter: String,
+        val sortAsc: Boolean
+        ): CabConnectEvent()
     data class GetMeineFahrten(val userId: Int): CabConnectEvent()
     data class DeleteFahrt(val fahrt: Fahrt): CabConnectEvent()
     object DeleteAll: CabConnectEvent()

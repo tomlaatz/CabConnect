@@ -35,6 +35,9 @@ import com.acme.cabconnect.ui.theme.*
 import java.time.LocalDate
 import java.time.ZoneId
 
+/**
+ * Bildschirm mit dem Grundgerüst für die Übersicht des Suchformulars.
+ */
 @Composable
 fun SuchformularScreen(
     navController: NavController,
@@ -64,7 +67,11 @@ fun SuchformularScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
-                        .height(topHeight)
+                        .height(topHeight),
+                    sortAsc = true,
+                    onSortChange = { },
+                    filter = "",
+                    onFilterChange = { }
                 )
 
                 Suchformular(
@@ -80,6 +87,11 @@ fun SuchformularScreen(
 
 }
 
+/**
+ * Bildschirm mit dem Formular für das Suchen einer bestimmten Fahrt unter möglicher Angabe von
+ * bestimmten Filtern:
+ * Startort, Zielort, Datum, Personen (Platz der nötig sein muss im Taxi).
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Suchformular(

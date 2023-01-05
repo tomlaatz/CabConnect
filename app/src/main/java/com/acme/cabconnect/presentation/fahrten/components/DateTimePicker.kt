@@ -28,6 +28,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Hilfsklasse für die Implementierung einer Datumsauswahl.
+ */
 @Composable
 fun DatePicker(
     pickedDate: LocalDate,

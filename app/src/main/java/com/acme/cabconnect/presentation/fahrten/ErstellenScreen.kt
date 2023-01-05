@@ -44,6 +44,9 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 
+/**
+ * Bildschirm mit dem Grundgerüst für das Erstellen einer neuen Fahrt.
+ */
 @Composable
 fun ErstellenScreen(navController: NavController, darkTheme: Boolean = isSystemInDarkTheme()) {
     val focusManager = LocalFocusManager.current
@@ -70,7 +73,11 @@ fun ErstellenScreen(navController: NavController, darkTheme: Boolean = isSystemI
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
-                        .height(topHeight)
+                        .height(topHeight),
+                    sortAsc = true,
+                    onSortChange = { },
+                    filter = "",
+                    onFilterChange = { }
                 )
 
                 ErstellenFormular(
@@ -85,7 +92,9 @@ fun ErstellenScreen(navController: NavController, darkTheme: Boolean = isSystemI
     }
 }
 
-
+/**
+ * Bildschirm mit dem Formular für das Erstellen einer neuen Fahrt.
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ErstellenFormular(
