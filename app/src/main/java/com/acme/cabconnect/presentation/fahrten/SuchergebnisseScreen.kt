@@ -48,7 +48,7 @@ fun SuchergebnisseScreen(
     }
 
     var filter by remember {
-        mutableStateOf("Datum")
+        mutableStateOf("Abfahrt")
     }
 
     viewModel.onEvent(

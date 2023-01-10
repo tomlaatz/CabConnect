@@ -201,7 +201,7 @@ fun Heading(
                         }
                     }
 
-                    val listItems = arrayOf("Datum", "Platz", "Rating")
+                    val listItems = arrayOf("Abfahrt", "Platz", "Rating")
                     var disabledItem by remember {
                         mutableStateOf(0)
                     }
